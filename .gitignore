@@ -1,32 +1,56 @@
-# Prerequisites
-*.d
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+const int joyXPin = A0;
+const int joyYPin = A1;
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+const int motorSpeedPin = 5;
+const int motorDir1Pin = 3;
+const int motorDir2Pin = 6;
 
-# Fortran module files
-*.mod
-*.smod
+void setup() {
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+  pinMode(motorSpeedPin, OUTPUT);
+  pinMode(motorDir1Pin, OUTPUT);
+  pinMode(motorDir2Pin, OUTPUT);
+  Serial.begin(9600);
+}
 
-# Executables
-*.exe
-*.out
-*.app
+void loop() {
+
+  pinMode(motorSpeedPin, OUTPUT);
+
+  pinMode(motorDir1Pin, OUTPUT);
+
+  pinMode(motorDir2Pin, OUTPUT);
+
+  digitalWrite(motorDir1Pin, LOW);
+
+  digitalWrite(motorDir2Pin, LOW);
+
+  int joyX = analogRead(joyXPin);
+  int joyY = analogRead(joyYPin);
+
+  if (joyX > 1000 && joyY > 500 && joyY < 530) {
+    digitalWrite(motorDir1Pin, HIGH);
+    digitalWrite(motorDir2Pin, LOW);
+  } else if (joyX < 30 && joyY > 500 && joyY < 530) {
+    digitalWrite(motorDir1Pin, LOW);
+    digitalWrite(motorDir2Pin, HIGH);
+  } else if (joyY > 1000 && joyX > 500 && joyX < 530) {
+    for (int i = 0; i < 256; i++) {
+      digitalWrite(motorDir1Pin, HIGH);
+      digitalWrite(motorDir2Pin, LOW);
+      analogWrite(motorSpeedPin, i);
+      delay(5);
+    }
+  } else if (joyY < 30 && joyX > 500 && joyX < 530) {
+    for (int i = 256; i >= 0; i--) {
+      digitalWrite(motorDir1Pin, HIGH);
+      digitalWrite(motorDir2Pin, LOW);
+      analogWrite(motorSpeedPin, i);
+       delay(5);
+    }
+  }
+
+  delay(200);
+}
